@@ -38,7 +38,7 @@ jobs:
       - name: Create JavaFX application package
         run: |
           jpackage --input target/ `
-            --name Infirmary Application `
+            --name InfirmaryApplication `
             --main-jar infirmary-application-1.0-SNAPSHOT.jar `
             --type exe `
             --dest target/package `
