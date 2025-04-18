@@ -60,10 +60,11 @@ jobs:
             --java-options "-Dorg.name=ROCS"
 
       - name: Upload installer artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: InfirmaryApplication-installer
           path: target/package/InfirmaryApplication-*.exe
+          retention-days: 5
 
       - name: Create GitHub Release
         if: github.event_name == 'push' && (github.ref == github.ref == 'refs/heads/master')
