@@ -1,0 +1,78 @@
+name: Package
+
+on:
+  workflow_dispatch:
+  workflow_run:
+    workflows: ["Java CI with Maven"]
+    branches: [ master ]
+    types: [ completed ]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  build-and-package:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v3
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          cache: maven
+
+      - name: Install WIX Toolset
+        run: |
+          Invoke-WebRequest -Uri https://github.com/wixtoolset/wix3/releases/download/wix3112rtm/wix311.exe -OutFile wix311.exe
+          Start-Process -FilePath ".\wix311.exe" -ArgumentList "/install", "/quiet", "/norestart" -Wait
+          echo "C:\Program Files (x86)\WiX Toolset v3.11\bin" | Out-File -FilePath $env:GITHUB_PATH -Append
+
+      - name: Create package directory
+        run: mkdir -p target/package
+
+      - name: Create JavaFX application package
+        run: |
+          jpackage --input target/ `
+            --name Infirmary Application `
+            --main-jar infirmary-application-1.0-SNAPSHOT.jar `
+            --type exe `
+            --dest target/package `
+            --win-menu `
+            --win-shortcut `
+            --module-path "target/lib" `
+            --add-modules javafx.controls,javafx.fxml,javafx.graphics,javafx.base `
+            --app-version 1.0.0 `
+            --vendor "RoCS" `
+            --copyright "Copyright © 2025 RoCS. All rights reserved." `
+            --description "Infirmary Desktop Application System" `
+            --win-dir-chooser `
+            --win-per-user-install `
+            --win-menu-group "RoCS" `
+            --java-options "-Xmx512m" `
+            --java-options "-Dapp.name=InfirmaryApplication" `
+            --java-options "-Dapp.version=1.0.0" `
+            --java-options "-Dorg.version=1.0" `
+            --java-options "-Dorg.name=ROCS"
+
+      - name: Upload installer artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: InfirmaryApplication-installer
+          path: target/package/InfirmaryApplication-*.exe
+
+      - name: Create GitHub Release
+        if: github.event_name == 'push' && (github.ref == github.ref == 'refs/heads/master')
+        uses: softprops/action-gh-release@v1
+        with:
+          name: Release ${{ github.ref_name }}-${{ github.sha }}
+          files: target/package/InfirmaryApplication-*.exe
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+
