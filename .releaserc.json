@@ -84,6 +84,6 @@
     ]
   ],
   "branches": [
-    "master", {"name": "SNAPSHOT", "prerelease": true}
+    "master", {"name": "beta", "prerelease": true}
   ]
 }
