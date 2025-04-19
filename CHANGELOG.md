@@ -1,5 +1,15 @@
 # Semantic Versioning Changelog
 
+## [3.0.0](https://github.com/jakeeviado/infirmary-application-test-env/compare/v2.0.0...v3.0.0) (2025-04-19)
+
+### ⚠ BREAKING CHANGES
+
+* test pre release!
+
+### New Feature(s) 🚀
+
+* test pre release! ([80681ad](https://github.com/jakeeviado/infirmary-application-test-env/commit/80681ad9cd4aa06f5750f426dfb3c6a7e030f282))
+
 ## [2.0.0](https://github.com/jakeeviado/infirmary-application-test-env/compare/v1.0.0...v2.0.0) (2025-04-19)
 
 ### ⚠ BREAKING CHANGES
