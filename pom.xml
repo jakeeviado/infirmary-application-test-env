@@ -248,6 +248,7 @@
                 <executions>
                     <execution>
                         <id>print-version</id>
+                        <phase>validate</phase>
                         <goals>
                             <goal>exec</goal>
                         </goals>
