@@ -38,22 +38,20 @@ jobs:
       - name: Get App Version from POM
         id: get-version
         run: |
-          $APP_VERSION = mvn exec:exec@print-version
-          echo "APP_VERSION=$APP_VERSION" >> $GITHUB_OUTPUT
+          $APP_VERSION = (mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
+          echo "APP_VERSION=$APP_VERSION" >> $env:GITHUB_OUTPUT
 
       - name: Get Latest JAR Name
         id: get-jar-name
         run: |
-          $JAR_NAME = mvn exec:exec@print-jar-name
-          echo "JAR_NAME=$JAR_NAME" >> $GITHUB_OUTPUT
+          $JAR_NAME = "${env:GITHUB_WORKSPACE}\target\$(mvn help:evaluate -Dexpression=project.artifactId -q -DforceStdout)-$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout).jar"
+          echo "JAR_NAME=$JAR_NAME" >> $env:GITHUB_OUTPUT
 
       - name: Create package directory
         run: mkdir -p target/package
 
       - name: Create JavaFX application installer artifact
         run: |
-          echo "${{ steps.get-jar-name.outputs.JAR_NAME }}"
-          echo "${{ steps.get-version.outputs.APP_VERSION }}"
           jpackage --input target/ `
             --name InfirmaryApplication `
             --main-jar "${{ steps.get-jar-name.outputs.JAR_NAME }}" `
