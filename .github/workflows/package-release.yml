@@ -35,17 +35,17 @@ jobs:
       - name: Run clean build with Maven
         run: mvn clean package
 
-      - name: Extract Group ID, Artifact ID, Version
-        id: extract
-        uses: andreacomo/maven-gav-extractor@v2
-
-      - name: Log GAV
+      - name: Get App Version from POM
+        id: get-version
         run: |
-          echo "${{ steps.extract.outputs.group-id }}"
-          echo "${{ steps.extract.outputs.artifact-id }}"
-          echo "${{ steps.extract.outputs.version }}"
-          echo "${{ steps.extract.outputs.name }}"
-        shell: bash
+          $APP_VERSION = mvn exec:exec@print-version
+          echo "$APP_VERSION=APP_VERSION" >> $GITHUB_OUTPUT
+
+      - name: Get Latest JAR Name
+        id: get-jar-name
+        run: |
+          $JAR_NAME = mvn exec:exec@print-jar-name
+          echo "$JAR_NAME=JAR_NAME" >> $GITHUB_OUTPUT
 
       - name: Create package directory
         run: mkdir -p target/package
@@ -54,14 +54,14 @@ jobs:
         run: |
           jpackage --input target/ `
             --name InfirmaryApplication `
-            --main-jar "${{ steps.extract.outputs.artifact-id }}-${{ steps.extract.outputs.version }}.jar" `
+            --main-jar "${{ steps.get-jar-name.outputs.JAR_NAME }}.jar" `
             --type exe `
             --dest target/package `
             --win-menu `
             --win-shortcut `
             --module-path "target/lib" `
             --add-modules javafx.controls,javafx.fxml,javafx.graphics,javafx.base `
-            --app-version echo "${{ steps.extract.outputs.version }}" `
+            --app-version "${{ steps.get-version.outputs.APP_VERSION }}" `
             --vendor "RoCS" `
             --description "Infirmary Desktop Application" `
             --win-dir-chooser `
