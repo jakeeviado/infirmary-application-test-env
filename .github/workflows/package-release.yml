@@ -35,17 +35,19 @@ jobs:
       - name: Run clean build with Maven
         run: mvn clean package
 
-      - name: Get App Version from POM
-        id: get-version
-        run: |
-          $APP_VERSION = mvn exec:exec@print-version
-          echo "$APP_VERSION=APP_VERSION" >> $GITHUB_OUTPUT
+      - name: Extract Maven project version
+        run: echo ::set-output name=version::$(mvn -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec)
+        id: project
 
-      - name: Get Latest JAR Name
+      - name: Show extracted Maven project version
+        run: echo ${{ steps.project.outputs.version }}
+
+      - name: Extract Maven project jar name
+        run: echo ::set-output name=jar_name::$(mvn -q -Dexec.executable=echo -Dexec.args='${project.jar.name}' --non-recursive exec:exec)
         id: get-jar-name
-        run: |
-          $JAR_NAME = mvn exec:exec@print-jar-name
-          echo "$JAR_NAME=JAR_NAME" >> $GITHUB_OUTPUT
+
+      - name: Show extracted Maven project jar name
+        run: echo ${{ steps.get-jar-name.outputs.jar_name }}
 
       - name: Create package directory
         run: mkdir -p target/package
@@ -61,7 +63,7 @@ jobs:
             --win-shortcut `
             --module-path "target/lib" `
             --add-modules javafx.controls,javafx.fxml,javafx.graphics,javafx.base `
-            --app-version echo "${{ steps.get-version.outputs.APP_VERSION }}" `
+            --app-version "${{ steps.project.outputs.version }}" `
             --vendor "RoCS" `
             --description "Infirmary Desktop Application" `
             --win-dir-chooser `
