@@ -36,8 +36,9 @@ jobs:
         run: mvn clean package
 
       - name: Get App Version from POM
+        id: get-version
         run: |
-          APP_VERSION = mvn exec:exec@print-version
+          $APP_VERSION = mvn exec:exec@print-version
           echo "APP_VERSION=$APP_VERSION"
           echo "app_version=$APP_VERSION" >> $GITHUB_OUTPUT
 
