@@ -40,14 +40,12 @@ jobs:
         run: |
           $APP_VERSION = mvn -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec
           echo "APP_VERSION=$APP_VERSION" >> $GITHUB_OUTPUT
-          shell: pwsh
 
       - name: Get Latest JAR Name
         id: get-jar-name
         run: |
           $JAR_FILE=$(ls target/*.jar | Select-Object -Last 1 | ForEach-Object {$_.BaseName})
           echo "JAR_FILE=$JAR_FILE" >> $GITHUB_OUTPUT
-          shell: pwsh
 
       - name: Create package directory
         run: mkdir -p target/package
