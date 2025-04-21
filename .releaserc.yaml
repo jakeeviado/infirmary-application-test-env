@@ -33,7 +33,7 @@ plugins:
         verifyReleaseCmd can also be used instead of prepareCmd" >> build.env
   - - "@semantic-release/changelog"
     - changelogFile: CHANGELOG.md
-      changelogTitle: "# Semantic Versioning Changelog"
+      changelogTitle: "# Changelogs"
   - - "@semantic-release/github"
     - assets:
           - path: "target/package/InfirmaryApplication-*.exe"
