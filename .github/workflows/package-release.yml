@@ -38,7 +38,7 @@ jobs:
       - name: Get App Version from POM
         id: get-version
         run: |
-          $APP_VERSION = mvn -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec
+          $APP_VERSION = mvn -q -Dexec.executable=echo -Dexec.args='${version}' --non-recursive exec:exec
           echo "APP_VERSION=$APP_VERSION" >> $GITHUB_OUTPUT
 
       - name: Get Latest JAR Name
