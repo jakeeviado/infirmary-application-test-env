@@ -248,7 +248,7 @@
                 <executions>
                     <execution>
                         <id>print-version</id>
-                        <phase>validate</phase>
+                        <phase>package</phase>
                         <goals>
                             <goal>exec</goal>
                         </goals>
@@ -262,7 +262,7 @@
                     </execution>
                     <execution>
                         <id>print-jar-name</id>
-                        <phase>validate</phase>
+                        <phase>package</phase>
                         <goals>
                             <goal>exec</goal>
                         </goals>
