@@ -203,11 +203,14 @@
             </plugin>
 
             <!--generate JAVADOCs, can run this also using: mvn javadoc:javadoc-->
-<!--             <plugin>
+             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
                 <version>3.6.3</version>
                 <configuration>
+<!--                    <doclint>none</doclint>-->
+<!--                    <additionalOptions>-Xdoclint:none</additionalOptions>-->
+<!--                    <additionalJOption>-Xdoclint:none</additionalJOption>-->
                     <outputDirectory>${project.build.directory}/docs</outputDirectory>
                     <reportOutputDirectory>${project.reporting.outputDirectory}/javadoc</reportOutputDirectory>
                     <destDir>javadoc</destDir>
@@ -238,7 +241,7 @@
                         </goals>
                     </execution>
                 </executions>
-            </plugin> -->
+            </plugin>
         </plugins>
     </build>
 </project>

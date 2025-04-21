@@ -1,4 +1,4 @@
-name: Package
+name: Package and Create Artifact
 
 on:
   workflow_dispatch:
@@ -26,57 +26,50 @@ jobs:
           distribution: 'temurin'
           cache: maven
 
-      - name: Install WIX Toolset
+      - name: Install WIX toolset
         run: |
           Invoke-WebRequest -Uri https://github.com/wixtoolset/wix3/releases/download/wix3112rtm/wix311.exe -OutFile wix311.exe
           Start-Process -FilePath ".\wix311.exe" -ArgumentList "/install", "/quiet", "/norestart" -Wait
           echo "C:\Program Files (x86)\WiX Toolset v3.11\bin" | Out-File -FilePath $env:GITHUB_PATH -Append
 
-      - name: Build with Maven
+      - name: Run clean build with Maven
         run: mvn clean package
+
+      - name: Get App Version from POM
+        id: get-version
+        run: |
+          APP_VERSION=$(mvn -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec)
+          echo "APP_VERSION=$APP_VERSION" >> $GITHUB_OUTPUT
+
+      - name: Get Latest JAR Name
+        id: get-jar-name
+        run: |
+          JAR_FILE=$(ls target/*.jar | Select-Object -Last 1 | ForEach-Object {$_.BaseName})
+          echo "JAR_FILE=$JAR_FILE" >> $GITHUB_OUTPUT
 
       - name: Create package directory
         run: mkdir -p target/package
 
-      - name: Create JavaFX application package
+      - name: Create JavaFX application installer artifact
         run: |
           jpackage --input target/ `
             --name InfirmaryApplication `
-            --main-jar infirmary-application-1.0-SNAPSHOT.jar `
+            --main-jar "${{ steps.get-jar-name.outputs.JAR_FILE }}.jar" `
             --type exe `
             --dest target/package `
             --win-menu `
             --win-shortcut `
             --module-path "target/lib" `
             --add-modules javafx.controls,javafx.fxml,javafx.graphics,javafx.base `
-            --app-version 1.0.0 `
+            --app-version "${{ steps.get-version.outputs.APP_VERSION }}" `
             --vendor "RoCS" `
-            --copyright "Copyright © 2025 RoCS. All rights reserved." `
-            --description "Infirmary Desktop Application System" `
+            --description "Infirmary Desktop Application" `
             --win-dir-chooser `
-            --win-per-user-install `
-            --win-menu-group "RoCS" `
-            --java-options "-Xmx512m" `
-            --java-options "-Dapp.name=InfirmaryApplication" `
-            --java-options "-Dapp.version=1.0.0" `
-            --java-options "-Dorg.version=1.0" `
-            --java-options "-Dorg.name=ROCS"
+            --verbose `
 
-      - name: Upload installer artifact
+      - name: Upload the installer artifact
         uses: actions/upload-artifact@v4
         with:
-          name: InfirmaryApplication-installer
+          name: InfirmaryApplication-Installer
           path: target/package/InfirmaryApplication-*.exe
-          retention-days: 5
-
-      - name: Create GitHub Release
-        if: github.event_name == 'push' && (github.ref == github.ref == 'refs/heads/master')
-        uses: softprops/action-gh-release@v1
-        with:
-          name: Release ${{ github.ref_name }}-${{ github.sha }}
-          files: target/package/InfirmaryApplication-*.exe
-          draft: false
-          prerelease: false
-        env:
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
 
