@@ -22,8 +22,6 @@
         <mockito.version>5.15.2</mockito.version>
         <oracle.ojdbc11.version>23.7.0.25.01</oracle.ojdbc11.version>
 
-        <project.jar.name>${project.artifactId}-${project.version}</project.jar.name>
-
         <maven.build.timestamp.format.yyyy>2025</maven.build.timestamp.format.yyyy>
     </properties>
 
