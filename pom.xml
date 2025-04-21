@@ -208,9 +208,6 @@
                 <artifactId>maven-javadoc-plugin</artifactId>
                 <version>3.6.3</version>
                 <configuration>
-<!--                    <doclint>none</doclint>-->
-<!--                    <additionalOptions>-Xdoclint:none</additionalOptions>-->
-<!--                    <additionalJOption>-Xdoclint:none</additionalJOption>-->
                     <outputDirectory>${project.build.directory}/docs</outputDirectory>
                     <reportOutputDirectory>${project.reporting.outputDirectory}/javadoc</reportOutputDirectory>
                     <destDir>javadoc</destDir>
@@ -235,7 +232,7 @@
                 <executions>
                     <execution>
                         <id>generate-javadoc</id>
-                        <phase>package</phase>
+                        <phase>site</phase>
                         <goals>
                             <goal>javadoc</goal>
                         </goals>
