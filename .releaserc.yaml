@@ -35,6 +35,9 @@ plugins:
     - changelogFile: CHANGELOG.md
       changelogTitle: "# Semantic Versioning Changelog"
   - - "@semantic-release/github"
+    - assets:
+          - path: "target/package/InfirmaryApplication-*.exe"
+            label: "Windows Distribution"
   - - "@semantic-release/git"
     - assets:
         - pom.xml

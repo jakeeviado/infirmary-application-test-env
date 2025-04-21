@@ -1,11 +1,10 @@
 name: Semantic Release
 
 on:
-  workflow_dispatch:
-  push:
-    branches: [ "master" ]
-  pull_request:
-    branches: [ "master" ]
+  workflow_run:
+    workflows: [ "Package and Create Artifact" ]
+    branches: [ master ]
+    types: [ completed ]
 
 jobs:
   semantic_release:
@@ -18,9 +17,17 @@ jobs:
         with:
           distribution: 'adopt'
           java-version: '17'
+
       - name: Install semantic-release
         run: npm install semantic-release @semantic-release/git @semantic-release/changelog @semantic-release/github @semantic-release/exec @semantic-release/commit-analyzer conventional-changelog-conventionalcommits
+
       - name: Semantic release
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
         run: npx semantic-release
+
+      - name: Download artifacts from another workflow
+        uses: actions/download-artifact@v3
+        with:
+            name: InfirmaryApplication-Installer
+            path: target/package/InfirmaryApplication-*.exe
