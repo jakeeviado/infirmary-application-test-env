@@ -35,17 +35,14 @@ jobs:
       - name: Run clean build with Maven
         run: mvn clean package
 
-      - name: Get App Version from POM
-        id: get-version
-        run: |
-          $APP_VERSION = mvn exec:exec@print-version
-          echo "$APP_VERSION=APP_VERSION" >> $GITHUB_OUTPUT
+      - name: Extract version from pom.xml file
+        id: version-extractor
+        uses: dostonhamrakulov/maven-artifact-version-extractor@v1.0
+        with:
+          file_path: ${{ github.workspace }}/pom.xml
 
-      - name: Get Latest JAR Name
-        id: get-jar-name
-        run: |
-          $JAR_NAME = mvn exec:exec@print-jar-name
-          echo "$JAR_NAME=JAR_NAME" >> $GITHUB_OUTPUT
+      - name: Get the output version
+        run: echo "The found version ${{ steps.version-extractor.outputs.version }}"
 
       - name: Create package directory
         run: mkdir -p target/package
@@ -54,14 +51,14 @@ jobs:
         run: |
           jpackage --input target/ `
             --name InfirmaryApplication `
-            --main-jar "${{ steps.get-jar-name.outputs.JAR_NAME }}.jar" `
+            --main-jar "infirmary-application-${{ steps.version-extractor.outputs.version }}.jar" `
             --type exe `
             --dest target/package `
             --win-menu `
             --win-shortcut `
             --module-path "target/lib" `
             --add-modules javafx.controls,javafx.fxml,javafx.graphics,javafx.base `
-            --app-version "${{ steps.get-version.outputs.APP_VERSION }}" `
+            --app-version "${{ steps.version-extractor.outputs.version }}" `
             --vendor "RoCS" `
             --description "Infirmary Desktop Application" `
             --win-dir-chooser `

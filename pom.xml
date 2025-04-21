@@ -260,20 +260,6 @@
                             </arguments>
                         </configuration>
                     </execution>
-                    <execution>
-                        <id>print-jar-name</id>
-                        <phase>validate</phase>
-                        <goals>
-                            <goal>exec</goal>
-                        </goals>
-                        <configuration>
-                            <executable>cmd.exe</executable>
-                            <arguments>
-                                <argument>/c</argument>
-                                <argument>echo ${project.artifactId}-${project.version}</argument>
-                            </arguments>
-                        </configuration>
-                    </execution>
                 </executions>
             </plugin>
 
