@@ -45,8 +45,9 @@ jobs:
       - name: Get Latest JAR Name
         id: get-jar-name
         run: |
-          $JAR_FILE=$(ls target/*.jar | Select-Object -Last 1 | ForEach-Object {$_.BaseName})
-          echo "JAR_FILE=$JAR_FILE" >> $GITHUB_OUTPUT
+          $JAR_NAME = mvn exec:exec@print-jar-name
+          echo "JAR_NAME=$JAR_NAME"
+          echo "jar_name=$JAR_NAME" >> $GITHUB_OUTPUT
 
       - name: Create package directory
         run: mkdir -p target/package
