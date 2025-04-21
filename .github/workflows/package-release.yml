@@ -56,7 +56,7 @@ jobs:
         run: |
           jpackage --input target/ `
             --name InfirmaryApplication `
-            --main-jar "${{ steps.get-jar-name.outputs.JAR_FILE }}.jar" `
+            --main-jar "${{ steps.get-jar-name.outputs.JAR_NAME }}.jar" `
             --type exe `
             --dest target/package `
             --win-menu `
