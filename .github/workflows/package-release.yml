@@ -54,14 +54,14 @@ jobs:
         run: |
           jpackage --input target/ `
             --name InfirmaryApplication `
-            --main-jar "${{ steps.get-jar-name.outputs.JAR_NAME }}" `
+            --main-jar echo "${{ steps.get-jar-name.outputs.JAR_NAME }}" `
             --type exe `
             --dest target/package `
             --win-menu `
             --win-shortcut `
             --module-path "target/lib" `
             --add-modules javafx.controls,javafx.fxml,javafx.graphics,javafx.base `
-            --app-version "${{ steps.get-version.outputs.APP_VERSION }}" `
+            --app-version echo "${{ steps.get-version.outputs.APP_VERSION }}" `
             --vendor "RoCS" `
             --description "Infirmary Desktop Application" `
             --win-dir-chooser `
