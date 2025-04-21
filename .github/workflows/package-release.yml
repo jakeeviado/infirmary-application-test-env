@@ -54,18 +54,18 @@ jobs:
 
       - name: Create JavaFX application installer artifact
         run: |
-          $JAR_NAME = "${{ steps.get-jar-name.outputs.JAR_NAME }}"
-          $APP_VERSION = "${{ steps.get-version.outputs.APP_VERSION }}"
+          $jar_name = "${{ steps.get-jar-name.outputs.jar_name }}"
+          $app_version = "${{ steps.get-version.outputs.app_version }}"
           jpackage --input target/ `
             --name InfirmaryApplication `
-            --main-jar "$JAR_NAME.jar" `
+            --main-jar "$jar_name.jar" `
             --type exe `
             --dest target/package `
             --win-menu `
             --win-shortcut `
             --module-path "target/lib" `
             --add-modules javafx.controls,javafx.fxml,javafx.graphics,javafx.base `
-            --app-version "$APP_VERSION" `
+            --app-version "$app_version" `
             --vendor "RoCS" `
             --description "Infirmary Desktop Application" `
             --win-dir-chooser `
