@@ -52,8 +52,8 @@ jobs:
 
       - name: Create JavaFX application installer artifact
         run: |
-          echo ${{ steps.get-jar-name.outputs.JAR_NAME }}
-          echo ${{ steps.get-version.outputs.APP_VERSION }}
+          echo "${{ steps.get-jar-name.outputs.JAR_NAME }}"
+          echo "${{ steps.get-version.outputs.APP_VERSION }}"
           jpackage --input target/ `
             --name InfirmaryApplication `
             --main-jar "${{ steps.get-jar-name.outputs.JAR_NAME }}" `
