@@ -39,33 +39,31 @@ jobs:
         id: get-version
         run: |
           $APP_VERSION = mvn exec:exec@print-version
-          echo "APP_VERSION=$APP_VERSION"
-          echo "app_version=$APP_VERSION" >> $GITHUB_OUTPUT
+          echo "APP_VERSION=$APP_VERSION" >> $GITHUB_OUTPUT
 
       - name: Get Latest JAR Name
         id: get-jar-name
         run: |
           $JAR_NAME = mvn exec:exec@print-jar-name
-          echo "JAR_NAME=$JAR_NAME"
-          echo "jar_name=$JAR_NAME" >> $GITHUB_OUTPUT
+          echo "JAR_NAME=$JAR_NAME" >> $GITHUB_OUTPUT
 
       - name: Create package directory
         run: mkdir -p target/package
 
       - name: Create JavaFX application installer artifact
         run: |
-          echo "${{ steps.get-jar-name.outputs.jar_name }}"
-          echo "${{ steps.get-version.outputs.app_version }}"
+          echo ${{ steps.get-jar-name.outputs.JAR_NAME }}
+          echo ${{ steps.get-version.outputs.APP_VERSION }}
           jpackage --input target/ `
             --name InfirmaryApplication `
-            --main-jar "${{ steps.get-jar-name.outputs.jar_name }}" `
+            --main-jar "${{ steps.get-jar-name.outputs.JAR_NAME }}" `
             --type exe `
             --dest target/package `
             --win-menu `
             --win-shortcut `
             --module-path "target/lib" `
             --add-modules javafx.controls,javafx.fxml,javafx.graphics,javafx.base `
-            --app-version "${{ steps.get-version.outputs.app_version }}" `
+            --app-version "${{ steps.get-version.outputs.APP_VERSION }}" `
             --vendor "RoCS" `
             --description "Infirmary Desktop Application" `
             --win-dir-chooser `
