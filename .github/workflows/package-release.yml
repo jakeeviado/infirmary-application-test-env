@@ -35,16 +35,16 @@ jobs:
       - name: Run clean build with Maven
         run: mvn clean package
 
-      - name: Extract group-id, artifact id, version
+      - name: Extract Group ID, Artifact ID, Version
         id: extract
         uses: andreacomo/maven-gav-extractor@v2
 
-      - name: Log group-id, artifact id, version
+      - name: Log GAV
         run: |
           echo "${{ steps.extract.outputs.group-id }}"
           echo "${{ steps.extract.outputs.artifact-id }}"
           echo "${{ steps.extract.outputs.version }}"
-          echo "Jar name: ${{ steps.extract.outputs.artifact-id }}-${{ steps.extract.outputs.version }}"
+          echo "${{ steps.extract.outputs.name }}"
         shell: bash
 
       - name: Create package directory
