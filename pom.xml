@@ -270,7 +270,7 @@
                             <executable>cmd.exe</executable>
                             <arguments>
                                 <argument>/c</argument>
-                                <argument>echo ${project.artifactId}-${project.version}.jar</argument>
+                                <argument>echo ${project.artifactId}-${project.version}</argument>
                             </arguments>
                         </configuration>
                     </execution>
