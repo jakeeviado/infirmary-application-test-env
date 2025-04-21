@@ -7,6 +7,7 @@ plugins:
           release: major
         - type: refactoring
           release: patch
+      defaultBump: patch
   - - "@semantic-release/release-notes-generator"
     - preset: conventionalcommits
       presetConfig:
