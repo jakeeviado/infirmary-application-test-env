@@ -1,5 +1,15 @@
 # Semantic Versioning Changelog
 
+## [4.0.1](https://github.com/jakeeviado/infirmary-application-test-env/compare/v4.0.0...v4.0.1) (2025-04-21)
+
+### Bug Fix(es)
+
+* modified semantic release config ([a204be0](https://github.com/jakeeviado/infirmary-application-test-env/commit/a204be078a85cfb02ee6295e1ecdd73a347741ca))
+
+### Code Refactor
+
+* modified workflows and pom.xml ([df408fa](https://github.com/jakeeviado/infirmary-application-test-env/commit/df408faec304e98129a42eb8a4f2658db88ecd47))
+
 ## [4.0.0](https://github.com/jakeeviado/infirmary-application-test-env/compare/v3.0.0...v4.0.0) (2025-04-19)
 
 ### ⚠ BREAKING CHANGES
